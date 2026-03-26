@@ -1,16 +1,28 @@
 using UnityEngine;
+using TMPro;
 
 public class GameHUD : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static GameHUD Instance;
+
+    public TextMeshProUGUI moneyText;
+    public TextMeshProUGUI popularityText;
+    public TextMeshProUGUI orderText;
+
+    private void Awake()
     {
-        
+        Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        UpdateUI();
+    }
+
+    public void UpdateUI()
+    {
+        moneyText.text = "Money: " + EconomyManager.Instance.Money;
+        popularityText.text = "Popularity: " + PopularityManager.Instance.Popularity;
+        orderText.text = "Order: Chicken Shawarma";
     }
 }

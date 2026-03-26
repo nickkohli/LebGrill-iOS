@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class OrderManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public string CurrentOrder = "Chicken Shawarma";
 
-    // Update is called once per frame
-    void Update()
+    public void CompleteOrder()
     {
-        
+        Debug.Log("Order Completed!");
+
+        EconomyManager.Instance.AddMoney(10);
+        PopularityManager.Instance.AddPopularity(2);
+
+        GameHUD.Instance.UpdateUI();
     }
 }

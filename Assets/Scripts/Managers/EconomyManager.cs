@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class EconomyManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static EconomyManager Instance;
+
+    public int Money { get; private set; }
+
+    private void Awake()
     {
-        
+        Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AddMoney(int amount)
     {
-        
+        Money += amount;
+        Debug.Log("Money: " + Money);
     }
 }

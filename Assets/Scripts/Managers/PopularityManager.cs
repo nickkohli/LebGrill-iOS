@@ -2,15 +2,18 @@ using UnityEngine;
 
 public class PopularityManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static PopularityManager Instance;
+
+    public int Popularity { get; private set; }
+
+    private void Awake()
     {
-        
+        Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void AddPopularity(int amount)
     {
-        
+        Popularity += amount;
+        Debug.Log("Popularity: " + Popularity);
     }
 }
