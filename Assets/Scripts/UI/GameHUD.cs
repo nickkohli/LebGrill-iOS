@@ -20,9 +20,13 @@ public class GameHUD : MonoBehaviour
     }
 
     public void UpdateUI()
-    {
-        moneyText.text = "Money: " + EconomyManager.Instance.Money;
-        popularityText.text = "Popularity: " + PopularityManager.Instance.Popularity;
-        orderText.text = "Order: Chicken Shawarma";
-    }
+{
+    moneyText.text = "Money: " + EconomyManager.Instance.Money;
+    popularityText.text = "Popularity: " + PopularityManager.Instance.Popularity;
+}
+
+    public void UpdateOrder(string order)
+{
+    orderText.text = "Order: " + order;
+}
 }
