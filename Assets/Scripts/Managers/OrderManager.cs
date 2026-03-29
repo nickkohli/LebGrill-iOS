@@ -14,7 +14,15 @@ public class OrderManager : MonoBehaviour
     public void SetCustomer(Customer customer)
     {
         currentCustomer = customer;
-        GameHUD.Instance.UpdateOrder(customer.Order);
+
+        if (currentCustomer != null)
+        {
+            GameHUD.Instance.UpdateOrder(currentCustomer.Order);
+        }
+        else
+        {
+            GameHUD.Instance.ClearOrder();
+        }
     }
 
     public void CompleteOrder()
@@ -31,13 +39,10 @@ public class OrderManager : MonoBehaviour
         EconomyManager.Instance.AddMoney(10);
         PopularityManager.Instance.AddPopularity(2);
 
-        Destroy(currentCustomer.gameObject);
         currentCustomer = null;
 
-        GameHUD.Instance.ClearOrder();
         GameHUD.Instance.UpdateUI();
-
-        CustomerManager.Instance.SpawnCustomer();
+        CustomerManager.Instance.RemoveFrontCustomer();
     }
 
     public void FailOrder()
@@ -47,18 +52,15 @@ public class OrderManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("❌ Customer left due to impatience.");
+        Debug.Log("❌ Order Failed, Customer left due to impatience!");
         GameHUD.Instance.ShowStatus("Customer Left!");
 
         PopularityManager.Instance.AddPopularity(-3);
 
-        Destroy(currentCustomer.gameObject);
         currentCustomer = null;
 
-        GameHUD.Instance.ClearOrder();
         GameHUD.Instance.UpdateUI();
-
-        CustomerManager.Instance.SpawnCustomer();
+        CustomerManager.Instance.RemoveFrontCustomer();
     }
 
     public Customer GetCurrentCustomer()
