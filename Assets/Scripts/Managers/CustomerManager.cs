@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class CustomerManager : MonoBehaviour
@@ -12,8 +13,9 @@ public class CustomerManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return null;
         SpawnCustomer();
     }
 
@@ -25,5 +27,7 @@ public class CustomerManager : MonoBehaviour
         customer.Initialize("Chicken Shawarma");
 
         OrderManager.Instance.SetCustomer(customer);
+
+        GameHUD.Instance.ShowStatus("Customer waiting for order");
     }
 }

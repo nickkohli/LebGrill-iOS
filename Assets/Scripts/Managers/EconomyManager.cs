@@ -14,6 +14,6 @@ public class EconomyManager : MonoBehaviour
     public void AddMoney(int amount)
     {
         Money += amount;
-        Debug.Log("Money: " + Money);
+        Debug.Log("💰 Money: " + Money);
     }
 }

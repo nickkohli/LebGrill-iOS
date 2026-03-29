@@ -14,6 +14,8 @@ public class PopularityManager : MonoBehaviour
     public void AddPopularity(int amount)
     {
         Popularity += amount;
-        Debug.Log("Popularity: " + Popularity);
+        Popularity = Mathf.Max(0, Popularity);
+
+        Debug.Log("🔥 Popularity: " + Popularity);
     }
 }
