@@ -34,7 +34,7 @@ public class OrderManager : MonoBehaviour
         }
 
         Debug.Log("✅ Order Completed Successfully!");
-        GameHUD.Instance.ShowStatus("Order Completed!");
+        GameHUD.Instance.ShowTemporaryStatus("Order Completed!", 0.75f);
 
         EconomyManager.Instance.AddMoney(10);
         PopularityManager.Instance.AddPopularity(2);
@@ -53,7 +53,7 @@ public class OrderManager : MonoBehaviour
         }
 
         Debug.Log("❌ Order Failed, Customer left due to impatience!");
-        GameHUD.Instance.ShowStatus("Customer Left!");
+        GameHUD.Instance.ShowTemporaryStatus("Customer Left!", 0.75f);
 
         PopularityManager.Instance.AddPopularity(-3);
 

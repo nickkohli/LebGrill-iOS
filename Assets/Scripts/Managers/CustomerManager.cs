@@ -9,8 +9,10 @@ public class CustomerManager : MonoBehaviour
     public GameObject customerPrefab;
     public Transform[] queuePoints;
     public int maxQueueSize = 3;
+    public float queueAdvanceDelay = 0.75f;
 
     private readonly Queue<Customer> customerQueue = new Queue<Customer>();
+    private bool isProcessingQueueAdvance;
 
     private void Awake()
     {
@@ -58,16 +60,32 @@ public class CustomerManager : MonoBehaviour
 
     public void RemoveFrontCustomer()
     {
+        if (!isProcessingQueueAdvance)
+        {
+            StartCoroutine(RemoveFrontCustomerRoutine());
+        }
+    }
+
+    private IEnumerator RemoveFrontCustomerRoutine()
+    {
         if (customerQueue.Count == 0)
         {
-            return;
+            yield break;
         }
+
+        isProcessingQueueAdvance = true;
 
         Customer frontCustomer = customerQueue.Dequeue();
         Destroy(frontCustomer.gameObject);
 
+        OrderManager.Instance.SetCustomer(null);
+
+        yield return new WaitForSeconds(queueAdvanceDelay);
+
         RefreshQueue();
         SpawnCustomer();
+
+        isProcessingQueueAdvance = false;
     }
 
     private void RefreshQueue()
@@ -85,10 +103,11 @@ public class CustomerManager : MonoBehaviour
         if (frontCustomer != null)
         {
             OrderManager.Instance.SetCustomer(frontCustomer);
-            GameHUD.Instance.ShowStatus("Customer waiting for order");
+            GameHUD.Instance.SetWaitingStatus();
         }
         else
         {
+            OrderManager.Instance.SetCustomer(null);
             GameHUD.Instance.ClearOrder();
         }
     }

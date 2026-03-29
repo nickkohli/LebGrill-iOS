@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
@@ -11,6 +12,8 @@ public class GameHUD : MonoBehaviour
     public TextMeshProUGUI patienceText;
     public TextMeshProUGUI statusText;
 
+    private Coroutine statusCoroutine;
+
     private void Awake()
     {
         Instance = this;
@@ -20,21 +23,17 @@ public class GameHUD : MonoBehaviour
     {
         UpdateUI();
         ClearOrder();
+        SetWaitingStatus();
     }
 
     private void Update()
     {
-        if (OrderManager.Instance == null)
+        if (OrderManager.Instance == null || patienceText == null)
         {
             return;
         }
 
         Customer currentCustomer = OrderManager.Instance.GetCurrentCustomer();
-
-        if (patienceText == null)
-        {
-            return;
-        }
 
         if (currentCustomer != null)
         {
@@ -43,14 +42,6 @@ public class GameHUD : MonoBehaviour
         else
         {
             patienceText.text = "Patience: -";
-        }
-    }
-
-    public void ShowStatus(string message)
-    {
-        if (statusText != null)
-        {
-            statusText.text = message;
         }
     }
 
@@ -81,5 +72,36 @@ public class GameHUD : MonoBehaviour
         {
             orderText.text = "Order: None";
         }
+    }
+
+    public void SetWaitingStatus()
+    {
+        if (statusText != null)
+        {
+            statusText.text = "Customer waiting for order";
+        }
+    }
+
+    public void ShowTemporaryStatus(string message, float duration)
+    {
+        if (statusCoroutine != null)
+        {
+            StopCoroutine(statusCoroutine);
+        }
+
+        statusCoroutine = StartCoroutine(ShowTemporaryStatusRoutine(message, duration));
+    }
+
+    private IEnumerator ShowTemporaryStatusRoutine(string message, float duration)
+    {
+        if (statusText != null)
+        {
+            statusText.text = message;
+        }
+
+        yield return new WaitForSeconds(duration);
+
+        SetWaitingStatus();
+        statusCoroutine = null;
     }
 }
